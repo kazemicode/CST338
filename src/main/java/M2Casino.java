@@ -9,11 +9,8 @@ import java.lang.Math;
 /* Main client class */
 public class M2Casino {
 
-    // global variables
+
     public static Scanner input = new Scanner(System.in);
-    // using a global array to store pull possibilities to eliminate chances of typoing with repeated typing
-    // of String values
-    private static String[] pullOutput = {"BAR", "cherries", "space", "7"};
 
     // drives the program
     public static void main(String[] args) {
@@ -21,15 +18,10 @@ public class M2Casino {
         while(bet != 0)
         {
             bet = getBet();
-            if(bet != 0)
-            {
-                TripleString thePull = pull();
-                display(thePull, getPayMultiplier(thePull, bet));
-            }
-
+            TripleString thePull = pull();
+            display(thePull, getPayMultiplier(thePull, bet));
         }
-        System.out.println("Play again soon!");
-        System.out.println(TripleString.displayWinnings());
+
         input.close();
 
     }
@@ -37,21 +29,22 @@ public class M2Casino {
     // gets the bet from the user and returns it
     public static int getBet()
     {
-        int bet = -99;
-        while(bet < 0 || bet > 100)
+        System.out.print("How much would you like to bet (1 - 100) or 0 to quit? ");
+        int bet = input.nextInt();
+
+        if(bet < 0 || bet > 100)
         {
-            System.out.print("How much would you like to bet (1 - 100) or 0 to quit? ");
-            bet = input.nextInt();
+            getBet();
         }
 
         return bet;
+
     }
 
     // simulates a random pull of the slot machine
     // generates three random strings and returns them as a TripleString object
     public static TripleString pull()
     {
-        System.out.println("whirrrrrr .... and your pull is ... ");
         TripleString t = new TripleString();
         t.setString1(randString());
         t.setString2(randString());
@@ -61,23 +54,41 @@ public class M2Casino {
 
     public static void display(TripleString thePull, int winnings)
     {
-        System.out.println(thePull);
-        if(winnings > 0)
-        {
-            System.out.println("Congratulations! You won $" + winnings +"\n");
 
-        }
-        else
+        // exit case: User entered a bet 0 zero, which means -99 returned as winnings
+        if(winnings == -99)
         {
-            System.out.println("Sorry, you lost.\n");
+            System.out.println("Play again soon!");
+            System.out.println(TripleString.displayWinnings());
         }
-        if(!TripleString.saveWinnings(winnings))
+
+        // simultaneously tries to save winnings to pullWinnings array AND checks if it is full
+        else if(!TripleString.saveWinnings(winnings))
         {
+            // if it's full, display "Game over" and win results
             System.out.println("Game over!");
             System.out.println(TripleString.displayWinnings());
-
+            input.close();
+            System.exit(0);
         }
 
+        // if the above cases are false, we're still playing!
+        else
+        {
+            System.out.println("whirrrrrr .... and your pull is ... ");
+            System.out.println(thePull);
+
+            if(winnings > 0)
+            {
+                System.out.println("Congratulations! You won $" + winnings +"\n");
+
+            }
+            else
+            {
+                System.out.println("Sorry, you lost.\n");
+            }
+
+        }
 
     }
 
@@ -88,19 +99,19 @@ public class M2Casino {
         int die = (int) (Math.random() * SIDES) + 1; // generates a number between 1-1000
         if(die > SIDES/2) // 50% chance
         {
-            return pullOutput[0]; // BAR
+            return "BAR"; // BAR
         }
         else if(die > SIDES/4) // 25% chance
         {
-            return pullOutput[1]; // cherries
+            return "cherries"; // cherries
         }
         else if(die > SIDES/8) // 12.5% chance
         {
-            return pullOutput[2]; // space
+            return "space"; // space
         }
         else // 12.5% chance
         {
-            return pullOutput[3]; // 7
+            return "7"; // 7
         }
 
     }
@@ -108,23 +119,27 @@ public class M2Casino {
     // Returns the payout of a pull
     public static int getPayMultiplier(TripleString thePull, int bet)
     {
-        if(thePull.getString1() == pullOutput[1] && thePull.getString2() != pullOutput[1])
+        if(bet == 0)
+        {
+            return -99;
+        }
+        else if(thePull.getString1() == "cherries" && thePull.getString2() != "cherries")
         {
             return bet * 5;
         }
-        else if(thePull.getString1() == pullOutput[1] && thePull.getString2() == pullOutput[1] && thePull.getString3() != pullOutput[1])
+        else if(thePull.getString1() == "cherries" && thePull.getString2() == "cherries" && thePull.getString3() != "cherries")
         {
             return bet * 15;
         }
-        else if(thePull.getString1() == pullOutput[1] && thePull.getString2() == pullOutput[1] && thePull.getString3() ==pullOutput[1])
+        else if(thePull.getString1() == "cherries" && thePull.getString2() == "cherries" && thePull.getString3() == "cherries")
         {
             return bet * 30;
         }
-        else if(thePull.getString1() == pullOutput[0] && thePull.getString2() == pullOutput[0] & thePull.getString3() == pullOutput[0])
+        else if(thePull.getString1() == "BAR" && thePull.getString2() == "BAR" & thePull.getString3() == "BAR")
         {
             return bet * 50;
         }
-        else if(thePull.getString1() == pullOutput[3] && thePull.getString2() == pullOutput[3] && thePull.getString3() == pullOutput[3])
+        else if(thePull.getString1() == "7" && thePull.getString2() == "7" && thePull.getString3() == "7")
         {
             return bet * 100;
         }
