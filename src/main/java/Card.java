@@ -80,14 +80,5 @@ public class Card
         return "** invalid **";
     }
 
-    public static void main(String[] args)
-    {
-        Card c = new Card();
-        Card d = new Card('f', Suit.spades);
-        Card f = new Card('K', Suit.diamonds);
-        System.out.println(f);
-        System.out.println(d);
-        System.out.println(c);
-    }
 }
 
