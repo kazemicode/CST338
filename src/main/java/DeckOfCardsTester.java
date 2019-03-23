@@ -10,6 +10,8 @@ public class DeckOfCardsTester
         System.out.println(d);
         System.out.println(c);
 
+        // Phase 2
+
         Hand h = new Hand();
         for(int index = 0; index < h.myCards.length; index+=3)
         {
@@ -31,5 +33,44 @@ public class DeckOfCardsTester
         {
             System.out.println("Playing " + h.inspectCard(index));
         }
+
+        // Phase 3
+
+        // double pack
+
+        Deck myDeck = new Deck(2);
+        System.out.println("\n\n\n**********DEAL UNSHUFFLED");
+        for(int index = 0; index < myDeck.getNumCards(); index++)
+        {
+            System.out.println("Dealing: "+ myDeck.dealCard());
+        }
+
+
+        System.out.println(" Test invalid k: " + myDeck.inspectCard(999));
+
+        myDeck.init(2);
+        myDeck.shuffle();
+        System.out.println("\n\n\n**********SHUFFLING!!!!");
+        System.out.println(myDeck);
+
+
+
+
+
+        //Single pack
+        Deck myDeck2 = new Deck(1);
+        System.out.println("\n\n\n**********DEAL UNSHUFFLED");
+        for(int index = 0; index < myDeck2.getNumCards(); index++)
+        {
+            System.out.println("Dealing: "+ myDeck2.dealCard());
+        }
+
+
+        System.out.println(" Test invalid k: " + myDeck2.inspectCard(999));
+
+        myDeck2.init(1);
+        myDeck2.shuffle();
+        System.out.println("\n\n\n**********SHUFFLING!!!!");
+        System.out.println(myDeck2);
     }
 }
