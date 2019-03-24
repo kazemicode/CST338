@@ -51,6 +51,7 @@ public class Deck
     // Populate the Deck with 52 * numPacks Cards
     public void init(int numPacks)
     {
+        topCard = cards.length - 1; // last card in deck
         int cardIndex = 0;
         for(int packs = 0; packs < numPacks; packs++)
             for(int index = 0; index < 52; index++)

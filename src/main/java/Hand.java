@@ -83,10 +83,13 @@ public class Hand
         String result = "Hand = ( ";
         for(int index = 0; index < myCards.length; index++)
         {
-            result += myCards[index] + ", ";
-            if(index % 5 == 3)
+            if(myCards[index] != null)
             {
-                result+="\n";
+                result += myCards[index] + ", ";
+                if (index % 5 == 3)
+                {
+                    result += "\n";
+                }
             }
 
         }
