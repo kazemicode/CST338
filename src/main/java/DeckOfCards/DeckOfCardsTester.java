@@ -1,3 +1,5 @@
+package DeckOfCards;
+
 public class DeckOfCardsTester
 {
     public static void main(String[] args)

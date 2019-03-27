@@ -1,3 +1,5 @@
+package DeckOfCards;
+
 /* Hand class
  * Has cards (Stored in private instance variable myCards, an array of Cards
  * Represents a player's hand of cards
@@ -48,6 +50,7 @@ public class Hand
     // Represents removing all cards from Hand
     public void resetHand()
     {
+        numCards = 0;
         for(int index = 0; index < myCards.length; index++)
         {
             myCards[index] = null;

@@ -1,4 +1,4 @@
-/* Sara Kazemi
+package Casino;/* Sara Kazemi
  * CST 338
  * M2: Casino
  */
@@ -62,15 +62,6 @@ public class M2Casino {
             System.out.println(TripleString.displayWinnings());
         }
 
-        // simultaneously tries to save winnings to pullWinnings array AND checks if it is full
-        else if(!TripleString.saveWinnings(winnings))
-        {
-            // if it's full, display "Game over" and win results
-            System.out.println("Game over!");
-            System.out.println(TripleString.displayWinnings());
-            input.close();
-            System.exit(0);
-        }
 
         // if the above cases are false, we're still playing!
         else
@@ -87,6 +78,8 @@ public class M2Casino {
             {
                 System.out.println("Sorry, you lost.\n");
             }
+
+            TripleString.saveWinnings(winnings);
 
         }
 

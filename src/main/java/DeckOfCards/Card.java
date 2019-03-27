@@ -1,4 +1,4 @@
-/* Card class is defined by a value (char) and suit (enum Suit) as well as
+package DeckOfCards;/* Card class is defined by a value (char) and suit (enum Suit) as well as
  * if it is in a valid state (boolean errorFlag)
  */
 

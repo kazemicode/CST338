@@ -1,3 +1,5 @@
+package DeckOfCards;
+
 import java.util.Scanner;
 
 public class DeckClient
@@ -8,7 +10,7 @@ public class DeckClient
         System.out.print("Enter number of players (1-10): ");
         int numHands = input.nextInt();
         Hand[] players = new Hand[numHands]; // this will store the Hand objects
-        Deck myDeck = new Deck(1); // single pack hand
+        Deck myDeck = new Deck(); // single pack hand
 
         // generate numHands number of Hand objects
         // put them in the players array

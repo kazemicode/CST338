@@ -1,3 +1,5 @@
+package DeckOfCards;
+
 public class Deck
 {
     private static Card[] masterPack;
@@ -10,7 +12,7 @@ public class Deck
     // zero argument constructor
     public Deck()
     {
-        new Deck(1);
+        this(1);
     }
 
     // one argument constructor
