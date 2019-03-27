@@ -8,27 +8,33 @@ public class DataMatrix implements BarcodeIO
     // private instance variables
     private BarcodeImage image;
     private String text;
-    private int actualWWidth;
+    private int actualWidth;
     private int actualHeight;
 
     /* CONSTRUCTORS */
 
-    // zero argument consttructor
+    // zero argument constructor
     public DataMatrix()
     {
         image = new BarcodeImage();
         text = "";
         actualHeight = 0;
-        actualHeight = 0;
+        actualWidth = 0;
     }
 
     public DataMatrix(BarcodeImage image)
     {
+        this.image = image;
+        text = ""; // to do -- use scan to determine text
+        actualHeight = image.getHeight();
+        actualWidth = image.getWidth();
 
     }
 
     public DataMatrix(String text)
     {
+        this.text = text;
+        // to do
 
     }
 
