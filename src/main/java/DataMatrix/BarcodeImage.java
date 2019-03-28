@@ -28,6 +28,25 @@ public class BarcodeImage implements Cloneable
     // 1-arg constructor Converts strData to imageData
     public BarcodeImage(String[] strData)
     {
+        imageData = new boolean[MAX_HEIGHT][MAX_WIDTH];
+        int blankRows = MAX_HEIGHT - strData.length;
+        int blankCols = MAX_WIDTH - strData[0].length();
+        for(int row = 0; row < imageData.length; row++)
+        {
+            for(int col = 0;  col < imageData[row].length; col++)
+            {
+                if(row >= blankRows && col >= blankCols)
+                {
+                    if(strData[row - blankRows].substring(col - blankCols, col - blankCols + 1).equals("*"))
+                    {
+                        imageData[row][col] = true;
+                    }
+                    else
+                        imageData[row][col] = false;
+                }
+            }
+        }
+
 
     }
 
@@ -62,7 +81,7 @@ public class BarcodeImage implements Cloneable
 
     /* Override Object.clone() */
     @Override
-    protected Object clone()
+    protected BarcodeImage clone()
     {
         try
         {
@@ -89,6 +108,7 @@ public class BarcodeImage implements Cloneable
         {
             for(int col = 0; col < imageData[row].length; col++)
             {
+
                 System.out.print(imageData[row][col]);
             }
             System.out.println();
