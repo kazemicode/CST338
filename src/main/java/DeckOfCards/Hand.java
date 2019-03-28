@@ -62,10 +62,10 @@ public class Hand
     // Return if successful or not (boolean)
     public boolean takeCard(Card card)
     {
-
         if(numCards < MAX_CARDS)
         {
-            myCards[numCards] = card;
+
+            myCards[numCards] = new Card(card.getValue(), card.getSuit());
             numCards++;
             return true;
         }
@@ -76,7 +76,10 @@ public class Hand
     // return and remove the Card last entered into the Hand
     public Card playCard()
     {
-        return myCards[numCards--];
+        Card result = new Card(myCards[numCards - 1].getValue(), myCards[numCards - 1].getSuit());
+        myCards[numCards - 1] = null;
+        numCards--;
+        return result;
     }
 
 

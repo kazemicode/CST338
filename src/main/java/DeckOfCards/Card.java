@@ -31,10 +31,13 @@ public class Card
     // Mutator method to set value and suit
     public boolean set(char value, Suit suit)
     {
-        this.value = value;
-        this.suit = suit;
         errorFlag = !isValid(value, suit); // set errorFlag to opposite of isValid
-        return true;
+        if(!errorFlag)
+        {
+            this.value = value;
+            this.suit = suit;
+        }
+        return !errorFlag;
     }
 
     // Accessor method returns Card's value (char)
@@ -66,7 +69,7 @@ public class Card
     // Checks if two cards have equivalent values and Suits
     public boolean equals(Card other)
     {
-        return this.value == other.value && this.suit.equals(other.suit);
+        return (this.value == other.value) && this.suit.equals(other.suit) && (this.errorFlag == other.errorFlag);
     }
 
     // Overridden toString method displays value and suit of Card
