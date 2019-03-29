@@ -80,6 +80,7 @@ public class BarcodeImage implements Cloneable
     }
 
     /* Override Object.clone() */
+    // to do: Determine if we should return an Object or BarcodeImage
     @Override
     protected BarcodeImage clone()
     {
