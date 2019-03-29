@@ -47,7 +47,18 @@ public class DataMatrix implements BarcodeIO
     {
         // this will call BarcodeImage.clone, cleanImage, and set actualWidth and actualHeight
         // clone call should be embedded within a try/catch block
-        return false;
+        try
+        {
+            image = (BarcodeImage) bc.clone();
+            cleanImage(); // to do
+            // to do - compute actual width and height
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        return true;
+
     }
 
     public boolean readText(String text)
