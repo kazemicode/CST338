@@ -1,4 +1,9 @@
 package DataMatrix;
+/* PHASE 1
+ * BarcodeIO is an Interface
+ * Defines the I/O and basic methods of any Barcode
+ * class which might implement it.
+ */
 
 public interface BarcodeIO
 {

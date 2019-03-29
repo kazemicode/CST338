@@ -1,7 +1,8 @@
 package DataMatrix;
 
 /*
- * A DataMatrix object describes a 2D dot-matrix pattern, or "image".
+ * PHASE 2
+ * A BarcodeImage object describes a 2D dot-matrix pattern, or "image".
  * This class contains some methods for storing, modifying and
  * retrieving the data in a 2D image.
  *

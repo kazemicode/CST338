@@ -1,5 +1,11 @@
 package DataMatrix;
 
+/* Phase 3
+ * DataMatrix: A pseudo DataMatrix data structure since it does not
+ * contain any error correction or encoding. It does have the 2D array
+ * format and bottom BLACK "spine" as well as an alternating right and
+ * top BLACK-WHITE pattern.
+ */
 public class DataMatrix implements BarcodeIO
 {
     public static final char BLACK_CHAR = '*'; // asterisk
