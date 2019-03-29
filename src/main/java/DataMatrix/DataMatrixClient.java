@@ -49,7 +49,7 @@ public class DataMatrixClient
                 };
 
         BarcodeImage bc = new BarcodeImage(sImageIn);
-        //bc.displayImage();
+        bc.displayImage();
         DataMatrix dm = new DataMatrix(bc);
 
         // First secret message
