@@ -74,4 +74,20 @@ public class DataMatrix implements BarcodeIO
     {
 
     }
+
+    /* Helper methods for cleanImage */
+    private void moveImageToLowerLeft()
+    {
+
+    }
+
+    private void shiftImageDown(int offset)
+    {
+
+    }
+
+    private void shiftImageLeft(int offset)
+    {
+
+    }
 }
