@@ -82,12 +82,12 @@ public class BarcodeImage implements Cloneable
     /* Override Object.clone() */
     // to do: Determine if we should return an Object or BarcodeImage
     @Override
-    protected BarcodeImage clone()
+    protected Object clone()
     {
         try
         {
             BarcodeImage copy = (BarcodeImage)super.clone();
-            copy.imageData = imageData.clone();
+            copy.imageData = (boolean[][])imageData.clone();
             return copy;
         }
         catch(CloneNotSupportedException e)
@@ -99,16 +99,22 @@ public class BarcodeImage implements Cloneable
 
     private boolean checkSize(String[] data)
     {
-        if(data == null)
+        // check if array is null or if the length surpasses
+        // the height of our 2D array
+        if(data == null || data.length > MAX_HEIGHT)
         {
             return false;
         }
-        else
+        // checks to see if each entry in array is not null and
+        // length of string does not surpass the width of our 2D array
+        for(String text : data)
         {
-            return (data.length <= MAX_HEIGHT) && (data[0].length() <= MAX_WIDTH);
-
+            if(text == null || text.length() > MAX_WIDTH)
+            {
+                return false;
+            }
         }
-
+        return true; // data is okay if we get to this point!
 
     }
 

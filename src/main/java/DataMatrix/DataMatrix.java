@@ -16,6 +16,7 @@ public class DataMatrix implements BarcodeIO
     // zero argument constructor
     public DataMatrix()
     {
+        // default values
         image = new BarcodeImage();
         text = "";
         actualHeight = 0;
@@ -24,30 +25,33 @@ public class DataMatrix implements BarcodeIO
 
     public DataMatrix(BarcodeImage image)
     {
-        this.image = image;
-        text = ""; // to do -- use scan to determine text
-        actualHeight = image.getHeight();
-        actualWidth = image.getWidth();
-
+        this();
+        scan(image); // should set the actualHeight, actualWidth, and a cleaned up version of image
     }
 
     public DataMatrix(String text)
     {
-        this.text = text;
-        // to do
-
+        this();
+        readText(text);
     }
 
     /* Implementation of BarcodeIO methods */
 
     public boolean scan(BarcodeImage bc)
     {
+        // this will call BarcodeImage.clone, cleanImage, and set actualWidth and actualHeight
+        // clone call should be embedded within a try/catch block
         return false;
     }
 
     public boolean readText(String text)
     {
-        return false;
+        if(text == null || text.trim() == "")
+        {
+            return false; // do we also need to check for empty string? or just spaces using trim?
+        }
+        this.text = text;
+        return true;
     }
 
     public boolean generateImageFromText()
