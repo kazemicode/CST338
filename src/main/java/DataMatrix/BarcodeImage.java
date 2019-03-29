@@ -99,7 +99,16 @@ public class BarcodeImage implements Cloneable
 
     private boolean checkSize(String[] data)
     {
-        return false;
+        if(data == null)
+        {
+            return false;
+        }
+        else
+        {
+            return (data.length <= MAX_HEIGHT) && (data[0].length() <= MAX_WIDTH);
+
+        }
+
 
     }
 
