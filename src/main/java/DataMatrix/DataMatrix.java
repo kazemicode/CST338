@@ -93,6 +93,26 @@ public class DataMatrix implements BarcodeIO
 
     private void cleanImage()
     {
+        boolean atBottomLeft = false;
+        for(int row = image.getHeight() - 1; row >= 0; row--) // traverse bottom up
+        {
+            for(int col = 0; col < image.getWidth(); col++) // left to right
+            {
+               if(image.getPixel(row, col)) // true
+               {
+                   atBottomLeft = true; // found the edge where data begins
+                   shiftImageDown((image.getHeight() - 1) - row);
+                   shiftImageLeft(col);
+                   break; // we're done
+               }
+            }
+
+            if(atBottomLeft)
+            {
+                break; // break out of loop
+            }
+
+        }
 
     }
 
@@ -104,11 +124,32 @@ public class DataMatrix implements BarcodeIO
 
     private void shiftImageDown(int offset)
     {
+        for(int row = image.getHeight() -1; row >= 0; row--) // bottom up
+        {
+            for(int col = 0; col < image.getWidth(); col++) // left to right
+            {
+                if(image.getPixel(row - offset, col))
+                {
+                    image.setPixel(row, col, true);
+                }
+                else
+                {
+                    image.setPixel(row, col, false);
+                }
+            }
+        }
 
     }
 
     private void shiftImageLeft(int offset)
     {
+        for(int row = image.getHeight() - 1; row >= 0; row--)
+        {
+            for(int col = 0; col < image.getWidth(); col++)
+            {
+
+            }
+        }
 
     }
 }
