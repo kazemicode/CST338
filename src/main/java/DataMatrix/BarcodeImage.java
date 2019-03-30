@@ -61,6 +61,10 @@ public class BarcodeImage implements Cloneable
         // value for both the actual data and also the
         // error condition -- so that we don't "create a scene"
         // if there is an error; we just return false.
+        if(row >= MAX_HEIGHT || col > MAX_WIDTH)
+        {
+            return false;
+        }
         return imageData[row][col];
     }
 
@@ -78,6 +82,10 @@ public class BarcodeImage implements Cloneable
 
     public boolean setPixel(int row, int col, boolean value)
     {
+        if(row >= MAX_HEIGHT || col > MAX_WIDTH)
+        {
+            return false;
+        }
         imageData[row][col] = value;
         return true;
     }
