@@ -41,22 +41,53 @@ public class DataMatrix implements BarcodeIO
         readText(text);
     }
 
+    /* ACCESSORS */
+
+    public int calculateSignalWidth()
+    {
+        int total = 0;
+        for(int col = 0; col < image.getWidth(); col++)
+        {
+            if(image.getPixel(image.getHeight() - 1, col))
+            {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    public int calculateSignalHeight()
+    {
+        int total = 0;
+        for(int row = 0; row < image.getHeight(); row++)
+        {
+            if(image.getPixel(row, 0))
+            {
+                total++;
+            }
+        }
+        return total;
+    }
+
     /* Implementation of BarcodeIO methods */
 
     public boolean scan(BarcodeImage bc)
     {
+        text = ""; // reset text
         // this will call BarcodeImage.clone, cleanImage, and set actualWidth and actualHeight
         // clone call should be embedded within a try/catch block
         try
         {
             image = (BarcodeImage) bc.clone();
-            cleanImage(); // to do
-            // to do - compute actual width and height
+
         }
         catch(Exception e)
         {
             return false;
         }
+        cleanImage(); // shifts image to bottom left
+        actualWidth = calculateSignalWidth();
+        actualHeight = calculateSignalHeight();
         return true;
 
     }
@@ -73,38 +104,93 @@ public class DataMatrix implements BarcodeIO
 
     public boolean generateImageFromText()
     {
-        return false;
+        if (text == null || text.length() > image.MAX_WIDTH)
+        {
+            return false;
+        }
+        resetImage(); // reset in case we have old data in image
+        actualWidth = text.length() + 2; // extra to account for limit and border
+        actualHeight = 10; // 8 bits and limit and border
+        writeLimitLines();
+        writeOpenBorders();
+
+        int ascii = 0; // int representation of a character in text
+        for(int col = 0; col < text.length(); col++)
+        {
+            ascii = (int)text.charAt(col);
+            charToCol(ascii, col + 1); // col is shifted over 1 after limit line
+        }
+        return true;
     }
 
     public boolean translateImageToText()
     {
+        if(image != null)
+        {
+            for(int col = 1; col < actualWidth - 2; col++)
+            {
+                text += colToChar(col);
+            }
+            return true;
+        }
         return false;
     }
 
     public void displayTextToConsole()
     {
+        System.out.println(text);
 
     }
 
     public void displayImageToConsole()
     {
-
+        printHorizontalLine();
+        for(int row = image.getHeight() - actualHeight; row < image.getHeight(); row++)
+        {
+            for(int col = 0; col < actualWidth + 2; col++)
+            {
+                if(col == 0)
+                {
+                    System.out.print("|");
+                }
+                if(col == actualWidth + 1)
+                {
+                    System.out.print("|");
+                }
+                else if(image.getPixel(row, col))
+                {
+                    System.out.print(BLACK_CHAR);
+                }
+                else
+                {
+                    System.out.print(WHITE_CHAR);
+                }
+            }
+            System.out.println();
+        }
+        printHorizontalLine();
     }
 
     private void cleanImage()
+    {
+        moveImageToLowerLeft();
+    }
+
+    /* Helper methods for cleanImage */
+    private void moveImageToLowerLeft()
     {
         boolean atBottomLeft = false;
         for(int row = image.getHeight() - 1; row >= 0; row--) // traverse bottom up
         {
             for(int col = 0; col < image.getWidth(); col++) // left to right
             {
-               if(image.getPixel(row, col)) // true
-               {
-                   atBottomLeft = true; // found the edge where data begins
-                   shiftImageDown((image.getHeight() - 1) - row);
-                   shiftImageLeft(col);
-                   break; // we're done
-               }
+                if(image.getPixel(row, col)) // true
+                {
+                    atBottomLeft = true; // found the bottom left edge
+                    shiftImageLeft(col);
+                    shiftImageDown((image.getHeight() - 1) - row);
+                    break; // we're done
+                }
             }
 
             if(atBottomLeft)
@@ -116,40 +202,143 @@ public class DataMatrix implements BarcodeIO
 
     }
 
-    /* Helper methods for cleanImage */
-    private void moveImageToLowerLeft()
-    {
-
-    }
-
     private void shiftImageDown(int offset)
     {
-        for(int row = image.getHeight() -1; row >= 0; row--) // bottom up
+        if (offset != 0) // if offset is 0, we don't need to do anything
         {
-            for(int col = 0; col < image.getWidth(); col++) // left to right
+            for (int row = image.getHeight() - 1; row >= 0; row--) // bottom up
             {
-                if(image.getPixel(row - offset, col))
+                for (int col = 0; col < image.getWidth(); col++) // left to right
                 {
-                    image.setPixel(row, col, true);
-                }
-                else
-                {
-                    image.setPixel(row, col, false);
+                    if(row - offset >= 0)
+                    {
+                        // shifts down values by row offset
+                        image.setPixel(row, col, image.getPixel(row - offset, col));
+                    }
                 }
             }
         }
-
     }
 
     private void shiftImageLeft(int offset)
     {
-        for(int row = image.getHeight() - 1; row >= 0; row--)
+
+        if(offset != 0) // if offset is 0, we don't need to do anything
+        {
+            for (int row = image.getHeight() - 1; row >= 0; row--)
+            {
+                for (int col = 0; col < image.getWidth(); col++)
+                {
+                    if(col + offset < image.getWidth())
+                    {
+                        // shifts values to the left by col offset
+                        image.setPixel(row, col, image.getPixel(row, col + offset));
+                    }
+                }
+            }
+        }
+    }
+
+    /* Helper method for translateImageToText */
+    private char colToChar(int col)
+    {
+        char result = 0;
+        int exponent = 0;
+        for(int row = image.MAX_HEIGHT - 2; row > image.MAX_HEIGHT - actualHeight; row--)
+        {
+            if(image.getPixel(row, col))
+            {
+                result += Math.pow(2, exponent);
+            }
+            exponent++;
+        }
+        return result;
+    }
+
+    /* Helper methods for generateImageFromText */
+
+    private void charToCol(int ascii, int col)
+    {
+        for(int row = image.getHeight() - 2; row >= image.getHeight() - actualHeight; row--)
+        {
+
+            if(ascii % 2 == 1)
+            {
+                image.setPixel(row, col, true);
+            }
+            ascii /= 2;
+        }
+    }
+
+    private void resetImage()
+    {
+        for(int row = 0; row < image.getHeight(); row++)
         {
             for(int col = 0; col < image.getWidth(); col++)
             {
-
+                image.setPixel(row, col, false);
             }
+        }
+    }
+
+    private void writeLimitLines()
+    {
+        writeLeftLimit();
+        writeBottomLimit();
+    }
+
+    private void writeLeftLimit()
+    {
+        for(int row = image.MAX_HEIGHT - 1; row >= image.MAX_HEIGHT - actualHeight; row--)
+        {
+            image.setPixel(row, 0, true); // set leftmost column to true for all data rows
+        }
+    }
+
+    private void writeBottomLimit()
+    {
+        for(int col = 0; col < actualWidth + 2; col++)
+        {
+            image.setPixel(image.MAX_HEIGHT - 1, col, true);
+        }
+    }
+
+    private void writeOpenBorders()
+    {
+        writeTopBorder();
+        writeRightBorder();
+    }
+
+    private void writeTopBorder()
+    {
+        for(int col = 0; col < actualWidth + 2; col++)
+        {
+            // set even cols to even in top row
+            image.setPixel(image.MAX_HEIGHT - actualHeight, col, col%2==0);
         }
 
     }
+
+    private void writeRightBorder()
+    {
+        for(int row = image.MAX_HEIGHT - 1; row >= image.MAX_HEIGHT - actualHeight; row--)
+        {
+            // set even rows to true in last col
+            image.setPixel(row, actualWidth, row%2==0);
+        }
+
+    }
+
+    /* Helper method for displayImageToConsole */
+    private void printHorizontalLine()
+    {
+        for(int col = 0; col < actualWidth + 2; col++)
+        {
+            System.out.print("-");
+        }
+        System.out.println();
+    }
+
+
 }
+

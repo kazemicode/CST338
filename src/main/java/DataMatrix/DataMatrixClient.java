@@ -52,6 +52,7 @@ public class DataMatrixClient
         bc.displayImage();
         DataMatrix dm = new DataMatrix(bc);
 
+
         // First secret message
         dm.translateImageToText();
         dm.displayTextToConsole();
@@ -65,7 +66,7 @@ public class DataMatrixClient
         dm.displayImageToConsole();
 
         // create your own message
-        dm.readText("What a great resume builder this is!");
+        dm.readText("Visit kazemicode.org!");
         dm.generateImageFromText();
         dm.displayTextToConsole();
         dm.displayImageToConsole();
