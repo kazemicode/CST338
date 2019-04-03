@@ -16,7 +16,7 @@ public class BarcodeImage implements Cloneable
     public static final int MAX_HEIGHT = 30;
     public static final int MAX_WIDTH = 65;
     // private instance variables
-    private boolean[][] imageData; // stores image -- false is white true is black
+    public boolean[][] imageData; // stores image -- false is white true is black
 
     /* CONSTRUCTORS */
 
@@ -91,7 +91,6 @@ public class BarcodeImage implements Cloneable
     }
 
     /* Override Object.clone() */
-    // to do: Determine if we should return an Object or BarcodeImage
     @Override
     protected Object clone()
     {
@@ -129,6 +128,7 @@ public class BarcodeImage implements Cloneable
 
     }
 
+    // for testing
     public void displayImage()
     {
         for(int row = 0; row < imageData.length; row++)
