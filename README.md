@@ -10,7 +10,7 @@ Provides students with the fundamental concepts to develop large-scale software,
 - [x] Module 2: [Casino Game](https://github.com/kazemicode/CST338/blob/master/src/main/java/Casino)
 - [x] Module 3: [Deck of Cards](https://github.com/kazemicode/CST338/tree/master/src/main/java/DeckOfCards)
 - [x] Module 4: [Barcode Scanner](https://github.com/kazemicode/CST338/tree/master/src/main/java/DataMatrix)
-- [x] Modules 5 - 6: [Build](): A GUI card game implemented with MVC architecture
+- [x] Modules 5 - 6: [Build](https://github.com/kazemicode/CST338_Assignment6_BUILD): A GUI card game implemented with MVC architecture
 - [x] Module 7: Android Development
 - [x] Module 8: Final Project - [Woman in Tech](https://github.com/kazemicode/Woman-in-tech-Android)
 
